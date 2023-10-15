@@ -1,0 +1,1 @@
+export 'historic_data_entity.dart';
