@@ -7,5 +7,4 @@ export 'utils/utils.dart';
 export 'package:cached_network_image/cached_network_image.dart';
 export 'constants/constants.export.dart';
 export 'utils/extensions.dart';
-export 'injection/injection_container.dart';
 export 'package:get_it/get_it.dart';

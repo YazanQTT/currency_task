@@ -1,22 +1,20 @@
 import 'package:bloc_test/bloc_test.dart';
+import 'package:currency_task/src/core/injection/inj.dart';
 import 'package:currency_task/src/src.export.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
 
-import 'historic_bloc_test.mocks.dart';
-
-@GenerateMocks([HistoricUseCases])
 void main() {
-  initLocator();
+  TestWidgetsFlutterBinding.ensureInitialized();
+  configureDependencies(env: ValueConstants.test);
 
   group('HistoricBloc', () {
     late HistoricBloc historicBloc;
-    late MockHistoricUseCases historicUseCases;
+    late HistoricUseCases historicUseCases;
 
     setUp(() {
-      historicUseCases = MockHistoricUseCases();
-      historicBloc = HistoricBloc(historicUseCases: historicUseCases);
+      historicUseCases = getIt.get<HistoricUseCases>() as MockHistoricUseCasesImpl;
+      historicBloc = HistoricBloc();
     });
 
     tearDown(() => historicBloc.close());

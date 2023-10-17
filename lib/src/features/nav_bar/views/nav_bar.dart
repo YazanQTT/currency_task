@@ -3,10 +3,10 @@ import 'package:google_nav_bar/google_nav_bar.dart';
 import '../../../src.export.dart';
 
 class NavBar extends StatelessWidget {
+  const NavBar();
   @override
   Widget build(BuildContext context) {
     final navBloc = NavBarBloc();
-
     return BlocBuilder<NavBarBloc, NavBarState>(
       bloc: navBloc,
       builder: (context, state) {

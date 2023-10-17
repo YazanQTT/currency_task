@@ -5,8 +5,7 @@ class ConverterPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final converterBloc =
-        ConverterBloc(convertUseCases: locator.get<ConvertUseCases>());
+    final converterBloc = context.read<ConverterBloc>();
     final amountController = TextEditingController();
 
     return Scaffold(

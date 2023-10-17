@@ -1,8 +1,8 @@
 import 'dart:convert';
 
 import 'package:currency_task/app_widget.dart';
-import 'package:currency_task/src/core/injection/injection_container.dart';
-import 'package:currency_task/src/services/connectivity/connectivity_service.dart';
+import 'package:currency_task/src/core/constants/constants.export.dart';
+import 'package:currency_task/src/core/injection/inj.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:json_theme/json_theme.dart';
@@ -15,8 +15,6 @@ void main() async {
   final themeJson = jsonDecode(themeStr);
   final theme = ThemeDecoder.decodeThemeData(themeJson)!;
 
-  initLocator();
-  locator.get<ConnectivityServiceImpl>().init();
-
-  runApp(AppWidget(themeData: theme,));
+  configureDependencies(env: ValueConstants.dev);
+  runApp(AppWidget(themeData: theme));
 }

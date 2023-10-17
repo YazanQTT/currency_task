@@ -1,4 +1,5 @@
 import 'package:connectivity_plus/connectivity_plus.dart';
+import 'package:injectable/injectable.dart';
 
 import '../../src.export.dart';
 
@@ -6,9 +7,14 @@ abstract class ConnectivityService {
   void updateConnectionStatus(ConnectivityResult event);
 }
 
+@Singleton(as: ConnectivityService)
 class ConnectivityServiceImpl implements ConnectivityService {
   final Connectivity _connectivity = Connectivity();
   bool hasConnection = true;
+
+  ConnectivityServiceImpl() {
+    init();
+  }
 
   void init() {
     _connectivity.onConnectivityChanged.listen(updateConnectionStatus);

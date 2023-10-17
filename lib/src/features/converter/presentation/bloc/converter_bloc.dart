@@ -1,12 +1,11 @@
 import 'dart:async';
 
+import 'package:currency_task/src/core/injection/inj.dart';
+
 import '../../../../src.export.dart';
 
 class ConverterBloc extends Bloc<ConverterEvent, ConverterState> {
-  final ConvertUseCases convertUseCases;
-
-  ConverterBloc({required this.convertUseCases})
-      : super(const ConverterState()) {
+  ConverterBloc() : super(const ConverterState()) {
     on<ConverterEvent>(_handleEvent);
   }
 
@@ -57,7 +56,7 @@ class ConverterBloc extends Bloc<ConverterEvent, ConverterState> {
           ),
         );
       } else {
-        final result = await convertUseCases.execute(
+        final result = await getIt.get<ConvertUseCases>().execute(
             state.fromCurrency?.code ?? '', state.toCurrency?.code ?? '');
 
         if (result.statusCode?.successResponse() ?? false) {

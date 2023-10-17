@@ -1,22 +1,20 @@
 import 'package:bloc_test/bloc_test.dart';
+import 'package:currency_task/src/core/injection/inj.dart';
 import 'package:currency_task/src/src.export.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
 
-import 'convert_bloc_test.mocks.dart';
-
-@GenerateMocks([ConvertUseCases])
 void main() {
-  initLocator();
+  TestWidgetsFlutterBinding.ensureInitialized();
+  configureDependencies(env: ValueConstants.test);
 
   group('ConvertBloc', () {
     late ConverterBloc converterBloc;
-    late MockConvertUseCases convertUseCases;
+    late MockConvertUseCasesImpl convertUseCases;
 
     setUp(() {
-      convertUseCases = MockConvertUseCases();
-      converterBloc = ConverterBloc(convertUseCases: convertUseCases);
+      convertUseCases = getIt.get<ConvertUseCases>() as MockConvertUseCasesImpl;
+      converterBloc = ConverterBloc();
     });
 
     tearDown(() => converterBloc.close());

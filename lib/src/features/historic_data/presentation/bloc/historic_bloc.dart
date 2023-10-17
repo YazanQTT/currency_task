@@ -1,21 +1,17 @@
 import 'dart:async';
 
+import 'package:currency_task/src/core/injection/inj.dart';
+
 import '../../../../src.export.dart';
 
 class HistoricBloc extends Bloc<HistoricEvent, HistoricState> {
-  final HistoricUseCases historicUseCases;
-
-  HistoricBloc({required this.historicUseCases})
-      : super(const HistoricState()) {
+  HistoricBloc() : super(const HistoricState()) {
     on<HistoricEvent>(_handleEvent);
   }
 
   Future<FutureOr<void>> _handleEvent(HistoricEvent event, Emitter<HistoricState> emit) async {
-
     emit(state.copyWith(historicStateStatus: HistoricStateStatus.LOADING));
-
-    final result = await historicUseCases.execute();
-
+    final result = await getIt.get<HistoricUseCases>().execute();
     if (result.statusCode?.successResponse() ?? false) {
       final responseData = result.data as Map<String, dynamic>;
       emit(

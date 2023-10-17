@@ -11,14 +11,13 @@ class AppWidget extends StatelessWidget {
     SystemChrome.setPreferredOrientations([
       DeviceOrientation.portraitUp,
     ]);
-
     return listOfBloc(
       child: MaterialApp(
         title: 'Currency Task',
         debugShowCheckedModeBanner: false,
         theme: this.themeData,
         navigatorKey: navigatorKey,
-        home: NavBar(),
+        home: const NavBar(),
       ),
     );
   }
@@ -31,13 +30,13 @@ MultiBlocProvider listOfBloc({required Widget child}) {
         create: (_) => NavBarBloc(),
       ),
       BlocProvider<CurrencyBloc>(
-        create: (_) => CurrencyBloc(currencyUseCases: locator.get<CurrencyUseCases>()),
+        create: (_) => CurrencyBloc(),
       ),
       BlocProvider<ConverterBloc>(
-        create: (_) => ConverterBloc(convertUseCases: locator.get<ConvertUseCases>()),
+        create: (_) => ConverterBloc(),
       ),
       BlocProvider<HistoricBloc>(
-        create: (_) => HistoricBloc(historicUseCases: locator.get<HistoricUseCases>()),
+        create: (_) => HistoricBloc(),
       ),
     ],
     child: child,

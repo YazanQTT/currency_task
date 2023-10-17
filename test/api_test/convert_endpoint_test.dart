@@ -1,5 +1,4 @@
-import 'package:currency_task/src/core/constants/constants.export.dart';
-import 'package:currency_task/src/services/network/network.export.dart';
+import 'package:currency_task/src/src.export.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';

@@ -5,33 +5,35 @@ class HistoricPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final historicBloc = context.read<HistoricBloc>();
-    historicBloc.add(GetHistoricDataEvent());
-
     return DefaultTabController(
       length: 2,
       child: Scaffold(
         appBar: AppBar(
           title: const CurrencyTabs(),
         ),
-        body: SafeArea(child: _body(historicBloc)),
+        body: SafeArea(child: _body(context)),
       ),
     );
   }
 
-  Widget _body(HistoricBloc historicBloc) {
-    return TabBarView(
-      children: [
-        _widgets('gb', historicBloc.state.historicData?.fRates ?? [],
-            Colors.blueAccent.shade100),
-        _widgets('eu', historicBloc.state.historicData?.tRates ?? [],
-            Colors.red.shade700),
-      ],
+  Widget _body(BuildContext context) {
+    final historicBloc = context.read<HistoricBloc>();
+    historicBloc.add(GetHistoricDataEvent());
+    return BlocBuilder<HistoricBloc, HistoricState>(
+      bloc: historicBloc,
+      builder: (context, state) {
+        return TabBarView(
+          children: [
+            _widgets('gb', historicBloc.state.historicData?.fRates ?? [], Colors.blueAccent.shade100),
+            _widgets('eu', historicBloc.state.historicData?.tRates ?? [], Colors.red.shade700),
+          ],
+        );
+      },
     );
   }
 
-  Widget _widgets(
-      String code, List<ExchangeRatesEntity> rates, Color chartColor) {
+  Widget _widgets(String code, List<ExchangeRatesEntity> rates,
+      Color chartColor) {
     return SingleChildScrollView(
       child: Padding(
         padding: const EdgeInsets.all(ValueConstants.formSpace),

@@ -1,4 +1,5 @@
 import 'package:currency_task/src/features/currencies/currencies.export.dart';
+import 'package:injectable/injectable.dart';
 import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
 
@@ -8,6 +9,7 @@ abstract class SqfliteService {
   Future<List<Map<String, dynamic>>> getData();
 }
 
+@LazySingleton(as: SqfliteService)
 class SqfliteServiceImpl implements SqfliteService {
   static const _databaseName = 'currency_db';
   static const _tableName = 'c_table';

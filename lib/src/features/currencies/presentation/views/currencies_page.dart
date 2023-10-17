@@ -5,7 +5,7 @@ class CurrenciesPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final currencyBloc = CurrencyBloc(currencyUseCases: locator.get<CurrencyUseCases>());
+    final currencyBloc = context.read<CurrencyBloc>();
     currencyBloc.add(GetCurrenciesEvent());
 
     return Scaffold(

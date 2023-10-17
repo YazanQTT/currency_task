@@ -1,9 +1,14 @@
+import 'package:injectable/injectable.dart';
+
+import '../../../../core/injection/inj.dart';
 import '../../../../src.export.dart';
 
-class RemoteDataSourceImpl implements CurrencyRemoteDatasource {
+@LazySingleton(as: CurrencyRemoteDatasource)
+class CurrencyRemoteDatasourceImpl implements CurrencyRemoteDatasource {
   @override
   Future<ValidResponse> fetchData() async {
-    final result = await locator.get<NetworkService>().get(
+
+    final result = await getIt.get<NetworkService>().get(
       baseUrl: NetworkConstants.baseUrl,
       path: '/api/v7/currencies',
       params: {
@@ -15,7 +20,7 @@ class RemoteDataSourceImpl implements CurrencyRemoteDatasource {
     final data = responseData.entries
         .map((e) => CurrencyModel.fromJson(e.value))
         .toList();
-    await locator.get<SqfliteService>().insertData(data);
+    await getIt.get<SqfliteService>().insertData(data);
     result.data = data;
 
     return result;

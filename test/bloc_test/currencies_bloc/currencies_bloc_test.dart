@@ -1,23 +1,23 @@
 import 'package:bloc_test/bloc_test.dart';
+import 'package:currency_task/src/core/injection/inj.dart' ;
 import 'package:currency_task/src/src.export.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
 
-import 'currencies_bloc_test.mocks.dart';
 
-@GenerateMocks([CurrencyUseCases])
 void main() {
-  initLocator();
+  TestWidgetsFlutterBinding.ensureInitialized();
+  configureDependencies(env: ValueConstants.test);
 
   group('CurrencyBloc', () {
     late CurrencyBloc currencyBloc;
-    late MockCurrencyUseCases currencyUseCases;
+    late CurrencyUseCases currencyUseCases;
 
     setUp(() {
-      currencyUseCases = MockCurrencyUseCases();
-      currencyBloc = CurrencyBloc(currencyUseCases: currencyUseCases);
+      currencyUseCases = getIt.get<CurrencyUseCases>() as MockCurrencyUseCasesImpl;
+      currencyBloc = CurrencyBloc();
     });
+
 
     tearDown(() => currencyBloc.close());
 

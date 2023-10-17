@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:http/http.dart' as http;
+import 'package:injectable/injectable.dart';
 
 import '../../src.export.dart';
 
@@ -14,6 +15,7 @@ abstract class NetworkService {
   });
 }
 
+@LazySingleton(as: NetworkService)
 class NetworkServiceImpl implements NetworkService {
   @override
   Future<ValidResponse> get({
