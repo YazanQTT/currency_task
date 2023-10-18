@@ -1,5 +1,7 @@
+import 'package:dartz/dartz.dart';
+
 import '../../../../src.export.dart';
 
 abstract class ConvertDatasource {
-  Future<ValidResponse> convertCurrencies(String fCurrencyCode, tCurrencyCode);
+  Future<Either<Failure, ValidResponse>> convertCurrencies(String fCurrencyCode, tCurrencyCode);
 }

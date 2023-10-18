@@ -1,6 +1,7 @@
 import 'package:bloc_test/bloc_test.dart';
 import 'package:currency_task/src/core/injection/inj.dart';
 import 'package:currency_task/src/src.export.dart';
+import 'package:dartz/dartz.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/mockito.dart';
 
@@ -116,10 +117,7 @@ void main() {
       'emits [LOADING, SUCCESS] when ConvertCurrenciesEvent is added, and adds [result, exchangeRate] => FromCurrency != ToCurrency',
       build: () {
         when(convertUseCases.execute('JOD', 'USD')).thenAnswer((_) async {
-          return ValidResponse(
-            data: {"JOD_USD": 1.41},
-            statusCode: 200,
-          );
+          return Right(ValidResponse(data: {"JOD_USD": 1.41}, statusCode: 200));
         });
 
         return converterBloc;
@@ -239,7 +237,7 @@ void main() {
           code: 'JOD',
           symbol: '\$',
           name: 'Jordanian Dinar',
-            id: '-',
+          id: '-',
         ),
       ),
       expect: () => [
@@ -291,9 +289,7 @@ void main() {
       'emits [LOADING, ERROR] when ConvertCurrenciesEvent is added, and results in an error',
       build: () {
         when(convertUseCases.execute('JOD', 'USD')).thenAnswer((_) async {
-          return ValidResponse(
-            statusCode: 500,
-          );
+          return Left(Failure(statusCode: 500, message: ''));
         });
 
         return converterBloc;

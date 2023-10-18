@@ -1,7 +1,9 @@
+import 'package:dartz/dartz.dart';
+
 import '../../../../src.export.dart';
 
 abstract class CurrencyRemoteDatasource {
-  Future<ValidResponse> fetchData();
+  Future<Either<Failure, ValidResponse>> fetchData();
 }
 
 

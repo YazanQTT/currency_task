@@ -39,6 +39,8 @@ dependencies:
   connectivity_plus: ^5.0.0
   #Mockicto
   mockito: ^5.4.2
+  #functional
+  dartz: ^0.10.1
 
 
 

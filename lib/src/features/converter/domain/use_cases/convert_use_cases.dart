@@ -1,3 +1,4 @@
+import 'package:dartz/dartz.dart';
 import 'package:injectable/injectable.dart';
 import 'package:mockito/annotations.dart';
 
@@ -6,7 +7,7 @@ import '../../../../src.export.dart';
 import 'convert_use_cases.mocks.dart';
 
 abstract class ConvertUseCases {
-  Future<ValidResponse> execute(String fCurrencyCode, String tCurrencyCode);
+  Future<Either<Failure, ValidResponse>> execute(String fCurrencyCode, String tCurrencyCode);
 }
 
 
@@ -14,7 +15,7 @@ abstract class ConvertUseCases {
 @LazySingleton(as: ConvertUseCases)
 class ConvertUseCasesImpl implements ConvertUseCases {
   @override
-  Future<ValidResponse> execute(String fCurrencyCode, String tCurrencyCode) async {
+  Future<Either<Failure, ValidResponse>> execute(String fCurrencyCode, String tCurrencyCode) async {
     return await getIt.get<ConvertRepository>().convertCurrencies(fCurrencyCode, tCurrencyCode);
   }
 }

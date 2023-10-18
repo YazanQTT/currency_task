@@ -1,3 +1,4 @@
+import 'package:dartz/dartz.dart';
 import 'package:injectable/injectable.dart';
 
 import '../../../../core/injection/inj.dart';
@@ -7,13 +8,13 @@ import '../../../../src.export.dart';
 class CurrencyLocalDatasourceImpl implements CurrencyLocalDatasource {
 
   @override
-  Future<ValidResponse> fetchData() async {
+  Future<Either<Failure, ValidResponse>> fetchData() async {
     final data = await getIt.get<SqfliteService>().getData();
     if (data.isNotEmpty) {
       final responseData = data.map((map) => CurrencyModel.fromJson(map)).toList();
-      return ValidResponse(statusCode: 200, data: responseData);
+      return Right(ValidResponse(statusCode: 200, data: responseData));
     } else {
-      return ValidResponse(statusCode: 500);
+      return Left(Failure(statusCode: 500, message: 'Failed to retrieve data'));
     }
   }
 

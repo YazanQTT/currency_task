@@ -57,10 +57,15 @@ class ConverterBloc extends Bloc<ConverterEvent, ConverterState> {
         );
       } else {
         final result = await getIt.get<ConvertUseCases>().execute(
-            state.fromCurrency?.code ?? '', state.toCurrency?.code ?? '');
+              state.fromCurrency?.code ?? '',
+              state.toCurrency?.code ?? '',
+            );
 
-        if (result.statusCode?.successResponse() ?? false) {
-          final convert = ConvertModel.fromJson(result.data);
+        result.fold(
+            (l) => emit(
+                state.copyWith(convertStateStatus: ConvertStateStatus.ERROR)),
+            (r) {
+          final convert = ConvertModel.fromJson(r.data);
           emit(
             state.copyWith(
               result: getResult(convert.exchangeRate, state.amount),
@@ -69,9 +74,7 @@ class ConverterBloc extends Bloc<ConverterEvent, ConverterState> {
               convertStateStatus: ConvertStateStatus.SUCCESS,
             ),
           );
-        } else {
-          emit(state.copyWith(convertStateStatus: ConvertStateStatus.ERROR));
-        }
+        });
       }
     }
   }

@@ -1,12 +1,11 @@
 import 'package:currency_task/src/core/constants/constants.export.dart';
 import 'package:currency_task/src/services/network/network.export.dart';
+import 'package:dartz/dartz.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
 
 import 'convert_endpoint_test.mocks.dart';
-
-
 
 @GenerateMocks([NetworkService])
 void main() {
@@ -24,16 +23,13 @@ void main() {
           },
         ),
       ).thenAnswer((_) async {
-        return ValidResponse(
-          data: {
-            'USD': {
-              'id': 'usd',
-              'currencyName': 'US Dollar',
-              'currencySymbol': '\$'
-            }
-          },
-          statusCode: 200,
-        );
+        return Right(ValidResponse(data: {
+          'USD': {
+            'id': 'usd',
+            'currencyName': 'US Dollar',
+            'currencySymbol': '\$'
+          }
+        }, statusCode: 200));
       });
 
       // Act
@@ -45,14 +41,18 @@ void main() {
         },
       );
 
+      ValidResponse validResponse = ValidResponse();
+      response.fold((l) => null, (r) => validResponse = r);
+
       // Assert
-      expect(response, isA<ValidResponse>());
-      expect(response.statusCode, 200);
-      expect(response.data, isA<Map<String, dynamic>>());
-      expect(response.data['USD'], isA<Map<String, dynamic>>());
-      expect(response.data['USD']['id'], 'usd');
-      expect(response.data['USD']['currencyName'], 'US Dollar');
-      expect(response.data['USD']['currencySymbol'], '\$');
+      expect(response, isA<Right>());
+      expect(validResponse, isA<ValidResponse>());
+      expect(validResponse.statusCode, 200);
+      expect(validResponse.data, isA<Map<String, dynamic>>());
+      expect(validResponse.data['USD'], isA<Map<String, dynamic>>());
+      expect(validResponse.data['USD']['id'], 'usd');
+      expect(validResponse.data['USD']['currencyName'], 'US Dollar');
+      expect(validResponse.data['USD']['currencySymbol'], '\$');
     });
 
     test('getCurrencies API call fail', () async {
@@ -68,10 +68,7 @@ void main() {
           },
         ),
       ).thenAnswer((_) async {
-        return ValidResponse(
-          data: null,
-          statusCode: 404,
-        );
+        return Left(Failure(statusCode: 400, message: 'No data'));
       });
 
       // Act
@@ -83,10 +80,14 @@ void main() {
         },
       );
 
+      late Failure failure;
+      response.fold((l) => failure = l, (r) => null);
+
       // Assert
-      expect(response, isA<ValidResponse>());
-      expect(response.statusCode, 404);
-      expect(response.data, null);
+      expect(response, isA<Left>());
+      expect(failure, isA<Failure>());
+      expect(failure.statusCode, 400);
+      expect(failure.message, 'No data');
     });
 
     test('getCurrencies API invalid URI', () async {
@@ -95,19 +96,19 @@ void main() {
       when(
         mockNetworkService.get(baseUrl: ''),
       ).thenAnswer((_) async {
-        return ValidResponse(
-          statusCode: 500,
-          message: 'Not valid URL',
-        );
+        return Left(Failure(statusCode: 500, message: 'Not valid URL'));
       });
 
       // Act
       final response = await mockNetworkService.get(baseUrl: '');
+      late Failure failure;
+      response.fold((l) => failure = l, (r) => null);
 
       // Assert
-      expect(response, isA<ValidResponse>());
-      expect(response.statusCode, 500);
-      expect(response.message, 'Not valid URL');
+      expect(response, isA<Left>());
+      expect(failure, isA<Failure>());
+      expect(failure.statusCode, 500);
+      expect(failure.message, 'Not valid URL');
     });
   });
 }

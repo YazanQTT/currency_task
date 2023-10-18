@@ -15,13 +15,13 @@ class CurrencyBloc extends Bloc<CurrencyEvent, CurrencyState> {
 
     final result = await getIt.get<CurrencyUseCases>().execute();
 
-    if (result.statusCode?.successResponse() ?? false) {
+    result.fold((l) {
+      emit(state.copyWith(status: CurrencyStateStatus.ERROR));
+    }, (r) {
       emit(state.copyWith(
         status: CurrencyStateStatus.SUCCESS,
-        currencyList: result.data,
+        currencyList: r.data,
       ));
-    } else {
-      emit(state.copyWith(status: CurrencyStateStatus.ERROR));
-    }
+    });
   }
 }

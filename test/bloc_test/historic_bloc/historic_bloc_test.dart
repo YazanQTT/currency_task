@@ -1,6 +1,7 @@
 import 'package:bloc_test/bloc_test.dart';
 import 'package:currency_task/src/core/injection/inj.dart';
 import 'package:currency_task/src/src.export.dart';
+import 'package:dartz/dartz.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/mockito.dart';
 
@@ -13,7 +14,8 @@ void main() {
     late HistoricUseCases historicUseCases;
 
     setUp(() {
-      historicUseCases = getIt.get<HistoricUseCases>() as MockHistoricUseCasesImpl;
+      historicUseCases =
+          getIt.get<HistoricUseCases>() as MockHistoricUseCasesImpl;
       historicBloc = HistoricBloc();
     });
 
@@ -27,7 +29,7 @@ void main() {
       'emits [Loading, Success] when GetHistoricDataEvent is added with successful API call',
       build: () {
         when(historicUseCases.execute()).thenAnswer((_) async {
-          return ValidResponse(
+          return Right(ValidResponse(
             data: {
               "GBP_USD": {
                 "2023-10-01": 1.219237,
@@ -49,7 +51,7 @@ void main() {
               }
             },
             statusCode: 200,
-          );
+          ));
         });
         return historicBloc;
       },
@@ -86,9 +88,7 @@ void main() {
       'emits [Loading, Error] when GetHistoricDataEvent results in an error',
       build: () {
         when(historicUseCases.execute()).thenAnswer((_) async {
-          return ValidResponse(
-            statusCode: 500,
-          );
+          return Left(Failure(statusCode: 500, message: ''));
         });
         return historicBloc;
       },

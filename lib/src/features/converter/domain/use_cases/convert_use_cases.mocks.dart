@@ -3,9 +3,10 @@
 // Do not manually edit this file.
 
 // ignore_for_file: no_leading_underscores_for_library_prefixes
-import 'dart:async' as _i3;
+import 'dart:async' as _i4;
 
-import 'package:currency_task/src/src.export.dart' as _i2;
+import 'package:currency_task/src/src.export.dart' as _i3;
+import 'package:dartz/dartz.dart' as _i2;
 import 'package:mockito/mockito.dart' as _i1;
 
 // ignore_for_file: type=lint
@@ -19,8 +20,8 @@ import 'package:mockito/mockito.dart' as _i1;
 // ignore_for_file: camel_case_types
 // ignore_for_file: subtype_of_sealed_class
 
-class _FakeValidResponse_0 extends _i1.SmartFake implements _i2.ValidResponse {
-  _FakeValidResponse_0(
+class _FakeEither_0<L, R> extends _i1.SmartFake implements _i2.Either<L, R> {
+  _FakeEither_0(
     Object parent,
     Invocation parentInvocation,
   ) : super(
@@ -32,13 +33,13 @@ class _FakeValidResponse_0 extends _i1.SmartFake implements _i2.ValidResponse {
 /// A class which mocks [ConvertUseCases].
 ///
 /// See the documentation for Mockito's code generation for more information.
-class MockConvertUseCases extends _i1.Mock implements _i2.ConvertUseCases {
+class MockConvertUseCases extends _i1.Mock implements _i3.ConvertUseCases {
   MockConvertUseCases() {
     _i1.throwOnMissingStub(this);
   }
 
   @override
-  _i3.Future<_i2.ValidResponse> execute(
+  _i4.Future<_i2.Either<_i3.Failure, _i3.ValidResponse>> execute(
     String? fCurrencyCode,
     String? tCurrencyCode,
   ) =>
@@ -50,7 +51,9 @@ class MockConvertUseCases extends _i1.Mock implements _i2.ConvertUseCases {
             tCurrencyCode,
           ],
         ),
-        returnValue: _i3.Future<_i2.ValidResponse>.value(_FakeValidResponse_0(
+        returnValue:
+            _i4.Future<_i2.Either<_i3.Failure, _i3.ValidResponse>>.value(
+                _FakeEither_0<_i3.Failure, _i3.ValidResponse>(
           this,
           Invocation.method(
             #execute,
@@ -60,5 +63,5 @@ class MockConvertUseCases extends _i1.Mock implements _i2.ConvertUseCases {
             ],
           ),
         )),
-      ) as _i3.Future<_i2.ValidResponse>);
+      ) as _i4.Future<_i2.Either<_i3.Failure, _i3.ValidResponse>>);
 }
